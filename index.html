@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>2025 北九州之旅</title>
+    
+    <!-- 引入 React -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    
+    <!-- 引入 Babel 用來解析 JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- 引入 Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- 設定字型 -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #f5f5f4;
+            -webkit-tap-highlight-color: transparent;
+        }
+        /* 自定義動畫 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        /* iOS 安全區域設定 */
+        .pb-safe {
+            padding-bottom: env(safe-area-inset-bottom, 20px);
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useMemo } = React;
+
+        // --- 簡易圖標組件 (SVG) ---
+        // 為了不依賴外部 npm 套件，我們直接將圖標寫成組件
+        const IconBase = ({ children, size = 20, className = "" }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>{children}</svg>
+        );
+
+        const Icons = {
+            Navigation: (p) => <IconBase {...p}><polygon points="3 11 22 2 13 21 11 13 3 11"/></IconBase>,
+            MapPin: (p) => <IconBase {...p}><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></IconBase>,
+            Utensils: (p) => <IconBase {...p}><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></IconBase>,
+            Train: (p) => <IconBase {...p}><rect width="16" height="16" x="4" y="4" rx="2"/><path d="M4 10h16"/><path d="M12 4v8"/><path d="m8 22 1-6"/><path d="m16 22-1-6"/><circle cx="8" cy="16" r="1"/><circle cx="16" cy="16" r="1"/></IconBase>,
+            Hotel: (p) => <IconBase {...p}><path d="M18 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2Z"/><polyline points="7 2 7 22"/><polyline points="17 2 17 22"/><line x1="2" x2="22" y1="12" y2="12"/><line x1="2" x2="22" y1="18" y2="18"/></IconBase>,
+            Calendar: (p) => <IconBase {...p}><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></IconBase>,
+            CloudSun: (p) => <IconBase {...p}><path d="M12 2v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="M20 12h2"/><path d="m19.07 4.93-1.41 1.41"/><path d="M15.947 12.65a4 4 0 0 0-5.925-4.128"/><path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"/></IconBase>,
+            Info: (p) => <IconBase {...p}><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></IconBase>,
+            Phone: (p) => <IconBase {...p}><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></IconBase>,
+            Wallet: (p) => <IconBase {...p}><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></IconBase>,
+            ChevronDown: (p) => <IconBase {...p}><path d="m6 9 6 6 6-6"/></IconBase>,
+            ChevronUp: (p) => <IconBase {...p}><path d="m18 15-6-6-6 6"/></IconBase>,
+            Plane: (p) => <IconBase {...p}><path d="M2 12h5"/><path d="M13 12h9"/><path d="M4 17V7l15 5Z"/></IconBase>,
+            Plus: (p) => <IconBase {...p}><path d="M5 12h14"/><path d="M12 5v14"/></IconBase>,
+            Trash2: (p) => <IconBase {...p}><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></IconBase>,
+            Snow: (p) => <IconBase {...p}><path d="M2 12h20"/><path d="M12 2v20"/><path d="m20 2-5 5"/><path d="m4 2 5 5"/><path d="m20 22-5-5"/><path d="m4 22 5-5"/></IconBase>
+        };
+
+        // --- Data ---
+        const tripData = {
+          meta: {
+            title: "2025 北九州之旅",
+            dates: "2025.12.24 - 12.31",
+            travelers: "爸、夫、丹、R"
+          },
+          days: [
+            {
+              id: 1,
+              date: "12/24 (三)",
+              location: "福岡",
+              weather: { temp: "8°C - 13°C", icon: "CloudSun", desc: "晴時多雲" },
+              items: [
+                {
+                  type: "transport",
+                  time: "14:45",
+                  title: "星宇航空 JX840",
+                  desc: "台北 T1 -> 福岡 (18:00)",
+                  highlight: "重要",
+                  nav: "福岡機場"
+                },
+                {
+                  type: "food",
+                  time: "19:00",
+                  title: "晚餐：福岡市區自理",
+                  desc: "推薦：LOPIA 超市熟食 或 博多拉麵",
+                  tips: "LOPIA 有很多高CP值的和牛壽司與熟食，適合第一天不想太累的選擇。",
+                  nav: "Lopia Hakata"
+                },
+                {
+                  type: "hotel",
+                  title: "福岡日航飯店",
+                  desc: "Hotel Nikko Fukuoka",
+                  nav: "Hotel Nikko Fukuoka"
+                }
+              ]
+            },
+            {
+              id: 2,
+              date: "12/25 (四)",
+              location: "福岡 → 由布院",
+              weather: { temp: "2°C - 10°C", icon: "CloudSun", desc: "山區較冷" },
+              items: [
+                {
+                  type: "food",
+                  time: "08:00",
+                  title: "Dacomecca 麵包",
+                  desc: "超人氣排隊名店",
+                  tags: ["必吃美食", "排隊名店"],
+                  tips: "博多站旁爆紅麵包店。必點：明太子法棍、炭烤漢堡排麵包。建議一開門就去，晚了選擇少。",
+                  nav: "Dacomecca"
+                },
+                {
+                  type: "transport",
+                  time: "10:11",
+                  title: "由布院之森 1號/3號",
+                  desc: "博多 -> 由布院 (12:32 抵達)",
+                  tags: ["需預約", "觀光列車"],
+                  tips: "全車指定席，一定要提前線上劃位。車上必買：B-Speak 蛋糕捲(小)、大豆冰淇淋。",
+                  nav: "Hakata Station"
+                },
+                {
+                  type: "sight",
+                  time: "13:00",
+                  title: "抵達由布院 & 飯店接駁",
+                  desc: "車站寄放行李或直接接駁",
+                  nav: "Yufuin Station"
+                },
+                {
+                  type: "food",
+                  time: "18:00",
+                  title: "晚餐：山莊無量塔",
+                  desc: "頂級溫泉旅館料理",
+                  tags: ["米其林推薦", "奢華"],
+                  tips: "無量塔（Murata）是御三家之一，融合西洋古董與日式建築。蕎麥麵『不生庵』也非常有名。",
+                  nav: "Sansou Murata"
+                },
+                {
+                  type: "hotel",
+                  title: "由布院 山莊無量塔",
+                  desc: "15:00 入住 / 11:00 退房",
+                  nav: "Sansou Murata"
+                }
+              ]
+            },
+            {
+              id: 3,
+              date: "12/26 (五)",
+              location: "由布院",
+              weather: { temp: "0°C - 8°C", icon: "CloudSun", desc: "早晚溫差大" },
+              items: [
+                {
+                  type: "transport",
+                  time: "11:00",
+                  title: "移動至下一間飯店",
+                  desc: "搭接駁車至車站，行李寄放壽花之庄",
+                  nav: "Kotobuki Hananosho"
+                },
+                {
+                  type: "sight",
+                  title: "湯之坪街道散策",
+                  desc: "花卉村、貓頭鷹之森、金鱗湖",
+                  tags: ["必逛"],
+                  tips: "必吃街頭小食：金賞可樂餅、Milch 布丁。",
+                  nav: "Yunotsubo Street"
+                },
+                {
+                  type: "sight",
+                  title: "COMICO ART MUSEUM",
+                  desc: "隈研吾設計美術館",
+                  tags: ["文青必訪", "打卡熱點"],
+                  tips: "建築外觀是燒杉黑牆，與由布岳相呼應。展出草間彌生、奈良美智作品，二樓大狗雕像必拍。",
+                  nav: "COMICO ART MUSEUM YUFUIN"
+                },
+                {
+                  type: "hotel",
+                  title: "由布院 壽花之庄",
+                  desc: "14:00 入住 / 10:00 退房",
+                  nav: "Kotobuki Hananosho"
+                }
+              ]
+            },
+            {
+              id: 4,
+              date: "12/27 (六)",
+              location: "由布院 → 阿蘇 → 黑川",
+              weather: { temp: "-2°C - 5°C", icon: "Snow", desc: "可能降雪" },
+              items: [
+                {
+                  type: "transport",
+                  time: "09:10",
+                  title: "前往阿蘇",
+                  desc: "高速巴士 (約 2.5hr) 或 JR九州橫斷特急",
+                  tips: "若搭巴士，上車前請出示郵件證明。",
+                  nav: "Yufuin Station Bus Terminal"
+                },
+                {
+                  type: "transport",
+                  time: "12:00",
+                  title: "阿蘇站 租車",
+                  desc: "開始自駕行程",
+                  tags: ["自駕", "需國際駕照"],
+                  nav: "Aso Station"
+                },
+                {
+                  type: "food",
+                  title: "午餐：赤牛飯",
+                  desc: "阿蘇必吃美食",
+                  tags: ["必吃美食"],
+                  tips: "推薦『Imakin食堂』(大排長龍) 或 『赤牛丼Iwasaki』。半熟蛋配上褐毛和牛，絕品。",
+                  nav: "Imakin Shokudo"
+                },
+                {
+                  type: "sight",
+                  title: "阿蘇火山口 / 草千里",
+                  desc: "視火山氣體濃度開放",
+                  nav: "Mount Aso Nakadake Crater"
+                },
+                {
+                  type: "hotel",
+                  time: "17:00",
+                  title: "黑川溫泉 奧之湯",
+                  desc: "15:00-17:00 入住",
+                  tags: ["露天溫泉"],
+                  tips: "黑川溫泉以『入湯手形』聞名，奧之湯有混浴露天溫泉(也有女性專用時段)，沿河風景極美。",
+                  nav: "Kurokawa Onsen Okunoyu"
+                }
+              ]
+            },
+            {
+              id: 5,
+              date: "12/28 (日)",
+              location: "黑川 → 熊本",
+              weather: { temp: "5°C - 12°C", icon: "CloudSun", desc: "多雲時晴" },
+              items: [
+                {
+                  type: "sight",
+                  time: "10:00",
+                  title: "阿蘇周邊觀光",
+                  desc: "大觀峰、阿蘇神社、上色見熊野座神社",
+                  tips: "上色見熊野座神社是『螢火之森』場景，神秘的參道階梯非常適合拍照。",
+                  nav: "Kamishikimi Kumanoza Shrine"
+                },
+                {
+                  type: "transport",
+                  time: "15:30",
+                  title: "阿蘇站 還車",
+                  nav: "Aso Station"
+                },
+                {
+                  type: "transport",
+                  time: "15:56",
+                  title: "特急 阿蘇男孩號 (Aso Boy!)",
+                  desc: "阿蘇 -> 熊本",
+                  tags: ["親子列車", "需預約"],
+                  tips: "全車都是『小黑』狗狗圖案，設有球池車廂。必拍：車窗外的全景座席。",
+                  nav: "Aso Station"
+                },
+                {
+                  type: "food",
+                  title: "晚餐：熊本美食",
+                  desc: "燒肉 Sudo 或 勝烈亭豬排",
+                  tags: ["必吃美食", "強烈建議預約"],
+                  tips: "『勝烈亭』是米其林推薦豬排，六白黑豚超厚切。『燒肉Sudo』有專人代烤，熊本最強燒肉之一。",
+                  nav: "Katsuretsu Tei Shinshigai"
+                },
+                {
+                  type: "hotel",
+                  title: "Ref Kumamoto",
+                  desc: "by VESSEL HOTELS",
+                  nav: "Ref Kumamoto by VESSEL HOTELS"
+                }
+              ]
+            },
+            {
+              id: 6,
+              date: "12/29 (一)",
+              location: "熊本 → 福岡",
+              weather: { temp: "7°C - 14°C", icon: "CloudSun", desc: "晴朗" },
+              items: [
+                {
+                  type: "sight",
+                  title: "熊本城 & 城彩苑",
+                  desc: "日本三大名城之一",
+                  tips: "地震後修復的天守閣已開放。城彩苑有很多熊本伴手禮和海膽可樂餅。",
+                  nav: "Kumamoto Castle"
+                },
+                {
+                  type: "transport",
+                  time: "15:20",
+                  title: "九州新幹線",
+                  desc: "熊本 -> 博多 (約 40分)",
+                  nav: "Kumamoto Station"
+                },
+                {
+                  type: "food",
+                  time: "19:30",
+                  title: "晚餐：博多摩滋鍋 前田屋",
+                  desc: "今泉店",
+                  tags: ["需預約", "必吃"],
+                  tips: "博多名物牛腸鍋(Motsunabe)。前田屋以新鮮和牛內臟聞名，味噌口味最經典。",
+                  nav: "Hakata Motsunabe Maedaya Imaizumi"
+                },
+                {
+                  type: "hotel",
+                  title: "福岡日航飯店",
+                  nav: "Hotel Nikko Fukuoka"
+                }
+              ]
+            },
+            {
+              id: 7,
+              date: "12/30 (二)",
+              location: "福岡",
+              weather: { temp: "6°C - 12°C", icon: "CloudSun", desc: "乾冷" },
+              items: [
+                {
+                  type: "food",
+                  time: "08:00",
+                  title: "Pain Stock Tenjin",
+                  desc: "箱崎的人氣麵包店天神分店",
+                  tags: ["必買", "明太子法國"],
+                  tips: "福岡麵包靈魂『明太子法國麵包』的代名詞。建議搭配咖啡在附近公園享用。",
+                  nav: "Pain Stock Tenjin"
+                },
+                {
+                  type: "sight",
+                  title: "福岡市區散策 / 購物",
+                  desc: "天神地下街、博多運河城",
+                  nav: "Tenjin Underground Shopping Center"
+                },
+                {
+                  type: "hotel",
+                  title: "福岡日航飯店",
+                  nav: "Hotel Nikko Fukuoka"
+                }
+              ]
+            },
+            {
+              id: 8,
+              date: "12/31 (三)",
+              location: "福岡 → 台北",
+              weather: { temp: "5°C - 11°C", icon: "CloudSun", desc: "晴時多雲" },
+              items: [
+                {
+                  type: "sight",
+                  title: "太宰府天滿宮",
+                  desc: "學問之神總本社",
+                  tags: ["建築大師設計"],
+                  tips: "整修中的『假殿』由藤本壯介設計，屋頂種滿植物，非常特別。必吃：梅枝餅。",
+                  nav: "Dazaifu Tenmangu"
+                },
+                {
+                  type: "transport",
+                  time: "16:00",
+                  title: "前往福岡機場",
+                  nav: "Fukuoka Airport"
+                },
+                {
+                  type: "transport",
+                  time: "19:10",
+                  title: "星宇航空 JX841",
+                  desc: "福岡 -> 台北 (20:50)",
+                  highlight: "Bye Bye!",
+                  nav: "Fukuoka Airport International Terminal"
+                }
+              ]
+            }
+          ],
+          flights: [
+            { num: "JX840", route: "TPE 14:45 -> FUK 18:00", date: "12/24" },
+            { num: "JX841", route: "FUK 19:10 -> TPE 20:50", date: "12/31" }
+          ],
+          hotels: [
+            { name: "福岡日航飯店", night: "Day 1, 6, 7", loc: "博多站前", tel: "+81-92-482-1111" },
+            { name: "山莊無量塔", night: "Day 2", loc: "由布院", tel: "+81-977-84-5000" },
+            { name: "壽花之庄", night: "Day 3", loc: "由布院", tel: "+81-977-84-2161" },
+            { name: "黑川溫泉 奧之湯", night: "Day 4", loc: "黑川", tel: "+81-967-44-0021" },
+            { name: "Ref Kumamoto", night: "Day 5", loc: "熊本", tel: "+81-96-322-0011" },
+          ],
+          emergency: [
+            { name: "警察局", tel: "110" },
+            { name: "火警/救護車", tel: "119" },
+            { name: "台北駐日代表處(福岡)", tel: "+81-92-734-2810" },
+            { name: "海外緊急救援", tel: "+886-800-085-095" }
+          ]
+        };
+
+        // --- Components ---
+
+        const WeatherBadge = ({ weather }) => (
+            <div className="flex items-center gap-1.5 text-xs text-stone-500 bg-stone-100 px-2 py-1 rounded-full">
+                {weather.icon === 'Snow' ? <Icons.Snow className="w-3 h-3 text-blue-400" /> : <Icons.CloudSun className="w-3 h-3 text-amber-500" />}
+                <span>{weather.temp}</span>
+                <span className="hidden sm:inline">· {weather.desc}</span>
+            </div>
+        );
+
+        const Tag = ({ children, color = "stone" }) => {
+            const colors = {
+                stone: "bg-stone-100 text-stone-600",
+                red: "bg-red-50 text-red-600 border border-red-100 font-medium",
+                amber: "bg-amber-50 text-amber-700 border border-amber-100",
+                indigo: "bg-indigo-50 text-indigo-700",
+            };
+            return (
+                <span className={`text-[10px] px-2 py-0.5 rounded-md ${colors[color] || colors.stone} mr-1.5`}>{children}</span>
+            );
+        };
+
+        const DayCard = ({ day, isExpanded, onToggle }) => {
+            return (
+                <div className="bg-white rounded-xl shadow-sm border border-stone-100 overflow-hidden mb-4 transition-all duration-300">
+                    <div onClick={onToggle} className="p-4 flex items-center justify-between cursor-pointer active:bg-stone-50">
+                        <div className="flex flex-col">
+                            <div className="flex items-center gap-2 mb-1">
+                                <span className="font-bold text-lg text-stone-800">{day.date}</span>
+                                <span className="text-sm text-stone-500 font-medium">{day.location}</span>
+                            </div>
+                            <WeatherBadge weather={day.weather} />
+                        </div>
+                        <div className="text-stone-300">
+                            {isExpanded ? <Icons.ChevronUp size={20} /> : <Icons.ChevronDown size={20} />}
+                        </div>
+                    </div>
+
+                    {isExpanded && (
+                        <div className="border-t border-stone-100 bg-stone-50/30">
+                            <div className="p-2 space-y-3">
+                                {day.items.map((item, idx) => (
+                                    <div key={idx} className="relative pl-4 pb-2 border-l-2 border-stone-200 ml-2 last:border-0 last:pb-0">
+                                        <div className={`absolute -left-[9px] top-0 w-4 h-4 rounded-full border-2 border-white ${item.type === 'food' ? 'bg-amber-400' : item.type === 'transport' ? 'bg-indigo-400' : item.type === 'hotel' ? 'bg-stone-400' : 'bg-emerald-400'}`}></div>
+                                        <div className="bg-white p-3 rounded-lg border border-stone-100 shadow-sm ml-2">
+                                            <div className="flex justify-between items-start mb-1">
+                                                <div className="flex flex-col">
+                                                    {item.time && <span className="text-xs font-mono text-stone-400 mb-0.5">{item.time}</span>}
+                                                    <h4 className="font-bold text-stone-800 text-sm md:text-base flex items-center gap-2">
+                                                        {item.title}
+                                                        {item.highlight && <Tag color="red">{item.highlight}</Tag>}
+                                                    </h4>
+                                                </div>
+                                                {item.nav && (
+                                                    <button 
+                                                        onClick={(e) => { e.stopPropagation(); window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.nav)}`, '_blank'); }}
+                                                        className="p-1.5 bg-blue-50 text-blue-600 rounded-full hover:bg-blue-100 transition-colors"
+                                                    >
+                                                        <Icons.Navigation size={14} />
+                                                    </button>
+                                                )}
+                                            </div>
+                                            <p className="text-xs text-stone-500 mb-2">{item.desc}</p>
+                                            {item.tags && (
+                                                <div className="flex flex-wrap gap-y-1 mb-2">
+                                                    {item.tags.map(tag => (
+                                                        <Tag key={tag} color={tag.includes("預約") ? "red" : tag.includes("必") ? "amber" : "stone"}>{tag}</Tag>
+                                                    ))}
+                                                </div>
+                                            )}
+                                            {item.tips && (
+                                                <div className="mt-2 text-xs bg-stone-50 p-2 rounded text-stone-600 italic border-l-2 border-amber-200">
+                                                    <span className="font-bold not-italic mr-1 text-amber-600">Tip:</span>{item.tips}
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
+        const InfoSection = () => (
+            <div className="space-y-6 p-4 pb-24">
+                <div className="bg-white p-5 rounded-2xl shadow-sm border border-stone-100">
+                    <h3 className="flex items-center gap-2 font-bold text-stone-800 mb-4 border-b border-stone-100 pb-2"><Icons.Plane size={18} className="text-indigo-500" /> 航班資訊</h3>
+                    <div className="space-y-3">
+                        {tripData.flights.map((f, i) => (
+                            <div key={i} className="flex justify-between items-center text-sm">
+                                <div><div className="font-bold text-stone-700">{f.num}</div><div className="text-stone-500 text-xs">{f.date}</div></div>
+                                <div className="font-mono text-stone-600">{f.route}</div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+                <div className="bg-white p-5 rounded-2xl shadow-sm border border-stone-100">
+                    <h3 className="flex items-center gap-2 font-bold text-stone-800 mb-4 border-b border-stone-100 pb-2"><Icons.Hotel size={18} className="text-emerald-500" /> 住宿列表</h3>
+                    <div className="space-y-4">
+                        {tripData.hotels.map((h, i) => (
+                            <div key={i} className="flex flex-col text-sm border-l-2 border-stone-200 pl-3">
+                                <div className="flex justify-between items-start">
+                                    <div className="font-bold text-stone-800">{h.name}</div>
+                                    <div className="text-xs bg-stone-100 px-2 py-0.5 rounded text-stone-500">{h.loc}</div>
+                                </div>
+                                <div className="text-stone-400 text-xs mb-1">{h.night}</div>
+                                <a href={`tel:${h.tel}`} className="flex items-center gap-1 text-stone-500 text-xs mt-1 hover:text-blue-500"><Icons.Phone size={10} /> {h.tel}</a>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+                <div className="bg-white p-5 rounded-2xl shadow-sm border border-red-50">
+                    <h3 className="flex items-center gap-2 font-bold text-red-700 mb-4 border-b border-red-50 pb-2"><Icons.Info size={18} /> 緊急聯絡</h3>
+                    <div className="grid grid-cols-2 gap-3">
+                        {tripData.emergency.map((e, i) => (
+                            <a key={i} href={`tel:${e.tel}`} className="flex flex-col p-3 bg-red-50/50 rounded-lg active:bg-red-100 transition-colors">
+                                <span className="text-xs text-red-500 mb-1">{e.name}</span>
+                                <span className="font-mono font-bold text-red-700">{e.tel}</span>
+                            </a>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        );
+
+        const BudgetCalculator = () => {
+            const [items, setItems] = useState([]);
+            const [name, setName] = useState('');
+            const [cost, setCost] = useState('');
+            const add = () => { if (!name || !cost) return; setItems([...items, { id: Date.now(), name, cost: parseInt(cost) }]); setName(''); setCost(''); };
+            const remove = (id) => setItems(items.filter(i => i.id !== id));
+            const total = items.reduce((sum, i) => sum + i.cost, 0);
+
+            return (
+                <div className="p-4 pb-24 space-y-4">
+                    <div className="bg-gradient-to-br from-stone-800 to-stone-700 p-6 rounded-2xl text-white shadow-lg">
+                        <h3 className="text-stone-300 text-sm font-medium mb-1">目前總花費 (JPY)</h3>
+                        <div className="text-4xl font-bold font-mono">¥{total.toLocaleString()}</div>
+                    </div>
+                    <div className="bg-white p-4 rounded-xl shadow-sm border border-stone-100">
+                        <div className="flex gap-2 mb-4">
+                            <input value={name} onChange={(e) => setName(e.target.value)} placeholder="項目" className="flex-1 bg-stone-50 border-none rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-stone-200" />
+                            <input type="number" value={cost} onChange={(e) => setCost(e.target.value)} placeholder="金額" className="w-24 bg-stone-50 border-none rounded-lg px-3 py-2 text-sm font-mono focus:ring-2 focus:ring-stone-200" />
+                            <button onClick={add} className="bg-stone-800 text-white p-2 rounded-lg active:scale-95 transition-transform"><Icons.Plus size={20} /></button>
+                        </div>
+                        <div className="space-y-2">
+                            {items.length === 0 && <div className="text-center text-stone-300 py-4 text-sm">暫無記帳資料</div>}
+                            {items.map(item => (
+                                <div key={item.id} className="flex justify-between items-center p-3 bg-stone-50 rounded-lg group">
+                                    <span className="text-stone-700 text-sm">{item.name}</span>
+                                    <div className="flex items-center gap-3">
+                                        <span className="font-mono text-stone-600">¥{item.cost.toLocaleString()}</span>
+                                        <button onClick={() => remove(item.id)} className="text-stone-300 hover:text-red-400"><Icons.Trash2 size={16} /></button>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // --- Main App ---
+        function App() {
+            const [activeTab, setActiveTab] = useState('itinerary');
+            const [expandedDay, setExpandedDay] = useState(2);
+
+            return (
+                <div className="min-h-screen bg-[#FDFCF8] text-stone-800 font-sans max-w-md mx-auto relative shadow-2xl overflow-hidden">
+                    <header className="sticky top-0 z-20 bg-[#FDFCF8]/90 backdrop-blur-md border-b border-stone-100 px-6 py-4 flex justify-between items-end">
+                        <div><h1 className="text-xl font-bold tracking-tight text-stone-900">2025 北九州</h1><p className="text-xs text-stone-500 font-medium mt-0.5 tracking-wide">Dec 24 - Dec 31</p></div>
+                    </header>
+
+                    <main className="min-h-screen">
+                        {activeTab === 'itinerary' && (
+                            <div className="p-4 pb-24 animate-fade-in">
+                                {tripData.days.map((day) => (
+                                    <DayCard key={day.id} day={day} isExpanded={expandedDay === day.id} onToggle={() => setExpandedDay(expandedDay === day.id ? null : day.id)} />
+                                ))}
+                            </div>
+                        )}
+                        {activeTab === 'info' && <InfoSection />}
+                        {activeTab === 'budget' && <BudgetCalculator />}
+                    </main>
+
+                    <nav className="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white border-t border-stone-200 px-6 py-3 flex justify-between items-center z-30 pb-safe">
+                        <button onClick={() => setActiveTab('itinerary')} className={`flex flex-col items-center gap-1 transition-colors ${activeTab === 'itinerary' ? 'text-stone-900' : 'text-stone-400'}`}>
+                            <Icons.Calendar size={20} strokeWidth={activeTab === 'itinerary' ? 2.5 : 2} /><span className="text-[10px] font-medium">行程</span>
+                        </button>
+                        <button onClick={() => setActiveTab('info')} className={`flex flex-col items-center gap-1 transition-colors ${activeTab === 'info' ? 'text-stone-900' : 'text-stone-400'}`}>
+                            <Icons.Hotel size={20} strokeWidth={activeTab === 'info' ? 2.5 : 2} /><span className="text-[10px] font-medium">資訊</span>
+                        </button>
+                        <button onClick={() => setActiveTab('budget')} className={`flex flex-col items-center gap-1 transition-colors ${activeTab === 'budget' ? 'text-stone-900' : 'text-stone-400'}`}>
+                            <Icons.Wallet size={20} strokeWidth={activeTab === 'budget' ? 2.5 : 2} /><span className="text-[10px] font-medium">記帳</span>
+                        </button>
+                    </nav>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
