@@ -79,31 +79,33 @@
             {
               id: 1,
               date: "12/24 (三)",
-              location: "福岡",
+              location: "台北 → 福岡",
               weather: { temp: "8°C - 13°C", icon: "CloudSun", desc: "晴時多雲" },
               items: [
                 {
                   type: "transport",
-                  time: "14:45",
-                  title: "星宇航空 JX840",
-                  desc: "台北 T1 -> 福岡 (18:00)",
-                  highlight: "重要",
-                  nav: "福岡機場"
-                },
-                {
-                  type: "food",
-                  time: "19:00",
-                  title: "晚餐：福岡市區自理",
-                  desc: "推薦：LOPIA 超市熟食 或 博多拉麵",
-                  tips: "LOPIA 有很多高CP值的和牛壽司與熟食，適合第一天不想太累的選擇。",
-                  nav: "Lopia Hakata"
+                  time: "14:45 - 18:00",
+                  title: "台北 T1 → 福岡 I",
+                  desc: "星宇航空 JX840",
+                  highlight: "去程航班",
+                  tags: ["交通"],
+                  nav: "桃園國際機場"
                 },
                 {
                   type: "hotel",
                   title: "福岡日航飯店",
-                  desc: "Hotel Nikko Fukuoka",
-                  nav: "Hotel Nikko Fukuoka"
-                }
+                  desc: "入住：15:00 / 退房：11:00",
+                  tips: "預訂人 @Janet @Rose。搭機場免費接駁巴士至國內線航廈，再轉乘地鐵 5 分鐘抵達「博多站」或搭乘計程車約 15 分鐘直達飯店。",
+                  tags: ["住宿"],
+                  nav: "福岡日航飯店"
+                },
+                {
+                  type: "food",
+                  title: "晚餐：LOPIA 超市熟食 或 博多拉麵",
+                  desc: "麵屋兼虎、ShinShin、博多一幸舍",
+                  tags: ["餐食"],
+                  tips: "11/1-12/25 博多聖誕市集「CHRISTMAS MARKET in 光の街・博多」。",
+                },
               ]
             },
             {
@@ -115,41 +117,41 @@
                 {
                   type: "food",
                   time: "08:00",
-                  title: "Dacomecca 麵包",
-                  desc: "超人氣排隊名店",
-                  tags: ["必吃美食", "排隊名店"],
-                  tips: "博多站旁爆紅麵包店。必點：明太子法棍、炭烤漢堡排麵包。建議一開門就去，晚了選擇少。",
+                  title: "早餐：Dacomecca",
+                  desc: "麵包店",
+                  tags: ["必吃美食", "餐食"],
+                  tips: "營業時間：週一至週日 07:00–19:00。推薦：明太子法棍。",
                   nav: "Dacomecca"
                 },
                 {
                   type: "transport",
-                  time: "10:11",
-                  title: "由布院之森 1號/3號",
-                  desc: "博多 -> 由布院 (12:32 抵達)",
-                  tags: ["需預約", "觀光列車"],
-                  tips: "全車指定席，一定要提前線上劃位。車上必買：B-Speak 蛋糕捲(小)、大豆冰淇淋。",
-                  nav: "Hakata Station"
+                  time: "10:11 - 12:32",
+                  title: "博多 → 由布院",
+                  desc: "JR 由布院之森 3 號",
+                  tags: ["需預約", "必搭人氣觀光列車", "交通"],
+                  tips: "博多車站內售票機掃描 Qrcode 換取由布院之森車票 @Janet。列車內提供的便當和一些甜點需要提前預訂。2號車廂有餐車櫃檯。",
+                  nav: "Yufuin Station"
                 },
                 {
                   type: "sight",
                   time: "13:00",
-                  title: "抵達由布院 & 飯店接駁",
-                  desc: "車站寄放行李或直接接駁",
+                  title: "逛車站周邊 或 飯店周邊",
+                  desc: "車站寄放行李 或 聯絡飯店接駁",
                   nav: "Yufuin Station"
                 },
                 {
-                  type: "food",
-                  time: "18:00",
-                  title: "晚餐：山莊無量塔",
-                  desc: "頂級溫泉旅館料理",
-                  tags: ["米其林推薦", "奢華"],
-                  tips: "無量塔（Murata）是御三家之一，融合西洋古董與日式建築。蕎麥麵『不生庵』也非常有名。",
+                  type: "hotel",
+                  title: "山莊無量塔",
+                  desc: "入住：15:00 / 退房：11:00",
+                  tips: "預訂人：@Janet，到店付款。設施：蕎麥麵「不生庵」、瑞士卷蛋糕店「B-speak」、巧克力專門店「theomurata」、咖啡館「thetheo」、 酒吧「The Tan’s Bar」、「Artegio美術館」、禮品店「藏拙」、餐廳「茶寮 柴扉洞」。",
+                  tags: ["住宿"],
                   nav: "Sansou Murata"
                 },
                 {
-                  type: "hotel",
-                  title: "由布院 山莊無量塔",
-                  desc: "15:00 入住 / 11:00 退房",
+                  type: "food",
+                  title: "晚餐：山莊無量塔",
+                  desc: "頂級懷石料理",
+                  tags: ["餐食"],
                   nav: "Sansou Murata"
                 }
               ]
@@ -161,80 +163,147 @@
               weather: { temp: "0°C - 8°C", icon: "CloudSun", desc: "早晚溫差大" },
               items: [
                 {
+                  type: "sight",
+                  time: "7:30",
+                  title: "金鱗湖欣賞晨霧",
+                  desc: "飯店出發步行 20 分鐘",
+                  tags: ["景點"],
+                  tips: "每年10月至翌年3月是拍攝金鱗湖晨霧的最佳季節，建議在早上6:30至8:00之間取景，日出前後的霧氣最濃。",
+                  nav: "金鱗湖"
+                },
+                {
+                  type: "food",
+                  time: "",
+                  title: "早餐：山莊無量塔",
+                  desc: "頂級懷石料理",
+                  tags: ["餐食"],
+                  nav: "Sansou Murata"
+                },
+                {
                   type: "transport",
                   time: "11:00",
-                  title: "移動至下一間飯店",
-                  desc: "搭接駁車至車站，行李寄放壽花之庄",
+                  title: "前往壽花之庄寄放行李",
+                  desc: "搭接駁車約 10 分鐘",
+                  tags: ["交通"],
                   nav: "Kotobuki Hananosho"
                 },
                 {
                   type: "sight",
+                  time: "",
                   title: "湯之坪街道散策",
-                  desc: "花卉村、貓頭鷹之森、金鱗湖",
-                  tags: ["必逛"],
-                  tips: "必吃街頭小食：金賞可樂餅、Milch 布丁。",
-                  nav: "Yunotsubo Street"
+                  desc: "由布院商店街",
+                  tags: ["景點"],
+                  tips: "營業時間：約 17:00 前會關門。",
+                  nav: "湯之坪街道"
+                },
+                {
+                  type: "sight",
+                  title: "由布院花卉村、金鱗湖",
+                  desc: "英式鄉村小型主題公園",
+                  tags: ["景點"],
+                  tips: "吉卜力商店、貓頭鷹之森。可於湖畔咖啡廳休息：Cafe La Ruche、茶房 天井棧敷。",
+                  nav: "由布院花卉村"
                 },
                 {
                   type: "sight",
                   title: "COMICO ART MUSEUM",
                   desc: "隈研吾設計美術館",
-                  tags: ["文青必訪", "打卡熱點"],
-                  tips: "建築外觀是燒杉黑牆，與由布岳相呼應。展出草間彌生、奈良美智作品，二樓大狗雕像必拍。",
+                  tags: ["景點"],
+                  tips: "展出草間彌生、村上隆、奈良美智作品，館外的白色大狗雕塑「Your Dog」是熱門拍照景點。營業時間：9:30-17:00（毎週三休館）。",
                   nav: "COMICO ART MUSEUM YUFUIN"
                 },
                 {
                   type: "hotel",
+                  time: "17:00",
                   title: "由布院 壽花之庄",
-                  desc: "14:00 入住 / 10:00 退房",
+                  desc: "入住：14:00-18:00 / 退房：10:00",
+                  tags: ["住宿"],
+                  tips: "預訂人：@Janet，到店付款。",
                   nav: "Kotobuki Hananosho"
-                }
+                },
+                {
+                  type: "food",
+                  time: "",
+                  title: "晚餐：壽花之庄",
+                  desc: "黑毛和牛牛排日式會席料理",
+                  tags: ["餐食"],
+                  nav: "Kotobuki Hananosho"
+                },
               ]
             },
             {
               id: 4,
               date: "12/27 (六)",
-              location: "由布院 → 阿蘇 → 黑川",
+              location: "由布院 → 阿蘇 → 黑川溫泉",
               weather: { temp: "-2°C - 5°C", icon: "Snow", desc: "可能降雪" },
               items: [
                 {
+                  type: "food",
+                  time: "7:30",
+                  title: "早餐：壽花之庄",
+                  desc: "日式鄉土料理",
+                  tags: ["餐食"],
+                  nav: "Kotobuki Hananosho"
+                },
+                {
                   type: "transport",
-                  time: "09:10",
-                  title: "前往阿蘇",
-                  desc: "高速巴士 (約 2.5hr) 或 JR九州橫斷特急",
-                  tips: "若搭巴士，上車前請出示郵件證明。",
+                  time: "09:10 - 11:33",
+                  title: "由布院站前巴士中心 → 阿蘇",
+                  desc: "九州產交高速巴士",
+                  tags: ["需預約", "交通"],
+                  tips: "@Janet 上車前出示郵件並告知工作人員預約者姓名。",
                   nav: "Yufuin Station Bus Terminal"
                 },
                 {
                   type: "transport",
                   time: "12:00",
-                  title: "阿蘇站 租車",
-                  desc: "開始自駕行程",
-                  tags: ["自駕", "需國際駕照"],
-                  nav: "Aso Station"
+                  title: "阿蘇站前 Toyota 租車",
+                  desc: "出發時間：2025/12/27 12:00 / 還車時間：2025/12/18 15:30",
+                  tags: ["需預約"],
+                  tips: "@Janet 預約號碼：99996098200，姓名：ChienYuChen。",
+                  nav: "阿蘇站前toyota租車"
                 },
                 {
                   type: "food",
+                  time: "13:00",
                   title: "午餐：赤牛飯",
-                  desc: "阿蘇必吃美食",
-                  tags: ["必吃美食"],
-                  tips: "推薦『Imakin食堂』(大排長龍) 或 『赤牛丼Iwasaki』。半熟蛋配上褐毛和牛，絕品。",
-                  nav: "Imakin Shokudo"
+                  desc: "阿蘇名物",
+                  tips: "推薦：MESHI NO YAMAICHI、IMAKIN食堂、Iwasaki。",
+                  tags: ["餐食", "必吃美食"],
+                  nav: "MESHI NO YAMAICHI"
                 },
                 {
                   type: "sight",
-                  title: "阿蘇火山口 / 草千里",
-                  desc: "視火山氣體濃度開放",
+                  title: "阿蘇火山口",
+                  tips: "視火山氣體濃度開放 https://www.aso-volcano.jp/。阿蘇山公園道路冬季期間：12月1日~3月19日 AM9:00-PM4:30 ※PM5:00閉門",
+                  tags: ["景點"],
                   nav: "Mount Aso Nakadake Crater"
                 },
                 {
                   type: "hotel",
-                  time: "17:00",
+                  time: "15:00",
                   title: "黑川溫泉 奧之湯",
-                  desc: "15:00-17:00 入住",
-                  tags: ["露天溫泉"],
-                  tips: "黑川溫泉以『入湯手形』聞名，奧之湯有混浴露天溫泉(也有女性專用時段)，沿河風景極美。",
+                  desc: "入住：15:00-17:00 / 退房：10:00 \n 提供可容納最多 25 輛車的免費停車場",
+                  tips: "預訂人：@Janet。",
+                  tags: ["住宿"],
                   nav: "Kurokawa Onsen Okunoyu"
+                },
+                {
+                  type: "food",
+                  time: "18:00",
+                  title: "晚餐：黑川溫泉 奧之湯",
+                  desc: "鄉村風味宴席料理",
+                  tags: ["餐食"],
+                  nav: "Kurokawa Onsen Okunoyu"
+                },
+                {
+                  type: "sight",
+                  time: "20:00",
+                  title: "黑川溫泉「湯明」",
+                  desc: "冬季限定點燈活動",
+                  tips: "時間：12月中旬至3月底，每日19:00-21:00；最佳地點：丸鈴橋。",
+                  tags: ["景點"],
+                  nav: "丸鈴橋"
                 }
               ]
             },
@@ -245,42 +314,60 @@
               weather: { temp: "5°C - 12°C", icon: "CloudSun", desc: "多雲時晴" },
               items: [
                 {
+                  type: "food",
+                  time: "8:30",
+                  title: "早餐：黑川溫泉 奧之湯",
+                  desc: "鄉村風味宴席料理",
+                  tags: ["餐食"],
+                  nav: "Kurokawa Onsen Okunoyu"
+                },
+                {
                   type: "sight",
                   time: "10:00",
-                  title: "阿蘇周邊觀光",
-                  desc: "大觀峰、阿蘇神社、上色見熊野座神社",
-                  tips: "上色見熊野座神社是『螢火之森』場景，神秘的參道階梯非常適合拍照。",
+                  title: "前往阿蘇周邊觀光",
+                  desc: "草千里之濱、大觀峰、阿蘇神社、上色見熊野座神社",
+                  tips: "",
+                  tags: ["景點"],
                   nav: "Kamishikimi Kumanoza Shrine"
+                },
+                {
+                  type: "food",
+                  title: "午餐：阿蘇自理",
+                  tags: ["餐食"],
+                  desc: "",
                 },
                 {
                   type: "transport",
                   time: "15:30",
-                  title: "阿蘇站 還車",
-                  nav: "Aso Station"
+                  title: "阿蘇站前 Toyota 還車",
+                  desc: "還車時間：2025/12/18 15:30",
+                  nav: "阿蘇站前toyota租車"
                 },
                 {
                   type: "transport",
-                  time: "15:56",
-                  title: "特急 阿蘇男孩號 (Aso Boy!)",
-                  desc: "阿蘇 -> 熊本",
-                  tags: ["親子列車", "需預約"],
-                  tips: "全車都是『小黑』狗狗圖案，設有球池車廂。必拍：車窗外的全景座席。",
-                  nav: "Aso Station"
-                },
-                {
-                  type: "food",
-                  title: "晚餐：熊本美食",
-                  desc: "燒肉 Sudo 或 勝烈亭豬排",
-                  tags: ["必吃美食", "強烈建議預約"],
-                  tips: "『勝烈亭』是米其林推薦豬排，六白黑豚超厚切。『燒肉Sudo』有專人代烤，熊本最強燒肉之一。",
-                  nav: "Katsuretsu Tei Shinshigai"
+                  time: "15:56 - 17:08",
+                  title: "阿蘇 → 熊本",
+                  desc: "JR 阿蘇男孩號 (Aso Boy!)",
+                  tags: ["需預約", "人氣觀光列車", "交通"],
+                  tips: "預訂人: @Rose。全車都是『小黑』狗狗圖案，3號車廂設有家庭車廂、親子坐席、遊樂場、咖啡館等。",
+                  nav: "熊本車站"
                 },
                 {
                   type: "hotel",
-                  title: "Ref Kumamoto",
-                  desc: "by VESSEL HOTELS",
+                  title: "Ref Kumamoto by VESSEL HOTELS",
+                  desc: "入住：14:00-24:00 / 退房：11:00",
+                  tips: "預訂人：@Janet @Rose。熊本車站搭乘計程車直達飯店",
+                  tags: ["住宿"],
                   nav: "Ref Kumamoto by VESSEL HOTELS"
-                }
+                },
+                {
+                  type: "food",
+                  title: "晚餐：燒肉 Sudo 或 勝烈亭豬排",
+                  desc: "",
+                  tips: "『勝烈亭』是米其林推薦豬排，六白黑豚超厚切。『燒肉Sudo』有專人代烤，熊本最強燒肉之一。",
+                  tags: ["餐食"],
+                  nav: "Katsuretsu Tei Shinshigai"
+                },
               ]
             },
             {
@@ -290,33 +377,36 @@
               weather: { temp: "7°C - 14°C", icon: "CloudSun", desc: "晴朗" },
               items: [
                 {
-                  type: "sight",
-                  title: "熊本城 & 城彩苑",
-                  desc: "日本三大名城之一",
-                  tips: "地震後修復的天守閣已開放。城彩苑有很多熊本伴手禮和海膽可樂餅。",
-                  nav: "Kumamoto Castle"
+                  type: "food",
+                  title: "午餐：熊本自理",
+                  desc: "",
+                  tags: ["餐食"],
                 },
                 {
                   type: "transport",
                   time: "15:20",
-                  title: "九州新幹線",
-                  desc: "熊本 -> 博多 (約 40分)",
+                  title: "熊本 → 博多",
+                  desc: "九州新幹線",
+                  tags: ["交通"],
                   nav: "Kumamoto Station"
-                },
-                {
-                  type: "food",
-                  time: "19:30",
-                  title: "晚餐：博多摩滋鍋 前田屋",
-                  desc: "今泉店",
-                  tags: ["需預約", "必吃"],
-                  tips: "博多名物牛腸鍋(Motsunabe)。前田屋以新鮮和牛內臟聞名，味噌口味最經典。",
-                  nav: "Hakata Motsunabe Maedaya Imaizumi"
                 },
                 {
                   type: "hotel",
                   title: "福岡日航飯店",
-                  nav: "Hotel Nikko Fukuoka"
-                }
+                  desc: "入住：15:00 / 退房：11:00",
+                  tips: "預訂人：@Janet",
+                  tags: ["住宿"],
+                  nav: "福岡日航飯店"
+                },
+                {
+                  type: "food",
+                  time: "19:30",
+                  title: "晚餐：博多牛腸鍋前田屋(今泉店)",
+                  desc: "博多名物牛腸鍋(Motsunabe)",
+                  tags: ["需預約", "必吃美食", "餐食"],
+                  tips: "預訂人：@Janet，預約號碼：#4419",
+                  nav: "博多もつ鍋前田屋 今泉店"
+                },
               ]
             },
             {
@@ -327,24 +417,40 @@
               items: [
                 {
                   type: "food",
-                  time: "08:00",
-                  title: "Pain Stock Tenjin",
-                  desc: "箱崎的人氣麵包店天神分店",
-                  tags: ["必買", "明太子法國"],
-                  tips: "福岡麵包靈魂『明太子法國麵包』的代名詞。建議搭配咖啡在附近公園享用。",
+                  time: "8:00",
+                  title: "早餐：Pain Stock 天神店",
+                  desc: "超人氣排隊麵包名店",
+                  tags: ["必吃美食", "餐食"],
+                  tips: "建議搭配咖啡在附近公園享用或內用。推薦：明太子麵包、開心果甜甜圈、白巧克力葡萄千層、咖啡。",
                   nav: "Pain Stock Tenjin"
                 },
                 {
                   type: "sight",
-                  title: "福岡市區散策 / 購物",
+                  title: "福岡市區散策",
                   desc: "天神地下街、博多運河城",
+                  tags: ["景點"],
                   nav: "Tenjin Underground Shopping Center"
+                },
+                {
+                  type: "food",
+                  time: "12:00",
+                  title: "午餐：鮨と天草大王 天音",
+                  desc: "Omakase",
+                  tags: ["虛預約", "餐食"],
+                  tips: "預訂人: @Janet",
+                  nav: "鮨と天草大王 天音"
                 },
                 {
                   type: "hotel",
                   title: "福岡日航飯店",
+                  tags: ["住宿"],
                   nav: "Hotel Nikko Fukuoka"
-                }
+                },
+                {
+                  type: "food",
+                  title: "晚餐：福岡市區自理",
+                  tags: ["餐食"],
+                }, 
               ]
             },
             {
@@ -354,33 +460,45 @@
               weather: { temp: "5°C - 11°C", icon: "CloudSun", desc: "晴時多雲" },
               items: [
                 {
+                  type: "food",
+                  title: "早餐：福岡市區自理",
+                  tags: ["餐食"],
+                },  
+                {
                   type: "sight",
                   title: "太宰府天滿宮",
-                  desc: "學問之神總本社",
-                  tags: ["建築大師設計"],
-                  tips: "整修中的『假殿』由藤本壯介設計，屋頂種滿植物，非常特別。必吃：梅枝餅。",
+                  desc: "學問、文化及藝術之神總本社",
+                  tips: "全年無休，冬季18:30關門。特色小吃：梅枝餅。",
+                  tags: ["景點"],
                   nav: "Dazaifu Tenmangu"
+                },
+                {
+                  type: "food",
+                  title: "午餐：福岡市區自理",
+                  tags: ["餐食"],
                 },
                 {
                   type: "transport",
                   time: "16:00",
                   title: "前往福岡機場",
+                  tags: ["交通"],
                   nav: "Fukuoka Airport"
                 },
                 {
                   type: "transport",
-                  time: "19:10",
-                  title: "星宇航空 JX841",
-                  desc: "福岡 -> 台北 (20:50)",
-                  highlight: "Bye Bye!",
+                  time: "19:10 - 20:50",
+                  title: "福岡 → 台北",
+                  desc: "星宇航空 JX841",
+                  highlight: "回程航班",
+                  tags: ["交通"],
                   nav: "Fukuoka Airport International Terminal"
                 }
               ]
             }
           ],
           flights: [
-            { num: "JX840", route: "TPE 14:45 -> FUK 18:00", date: "12/24" },
-            { num: "JX841", route: "FUK 19:10 -> TPE 20:50", date: "12/31" }
+            { num: "JX840", route: "TPE 14:45 → FUK 18:00", date: "12/24" },
+            { num: "JX841", route: "FUK 19:10 → TPE 20:50", date: "12/31" }
           ],
           hotels: [
             { name: "福岡日航飯店", night: "Day 1, 6, 7", loc: "博多站前", tel: "+81-92-482-1111" },
@@ -423,7 +541,7 @@
             return (
                 <div className="bg-white rounded-xl shadow-sm border border-stone-100 overflow-hidden mb-4 transition-all duration-300">
                     <div onClick={onToggle} className="p-4 flex items-center justify-between cursor-pointer active:bg-stone-50">
-                        <div className="flex flex-col">
+                        <div className="flex flex-col items-start">
                             <div className="flex items-center gap-2 mb-1">
                                 <span className="font-bold text-lg text-stone-800">{day.date}</span>
                                 <span className="text-sm text-stone-500 font-medium">{day.location}</span>
@@ -459,7 +577,7 @@
                                                     </button>
                                                 )}
                                             </div>
-                                            <p className="text-xs text-stone-500 mb-2">{item.desc}</p>
+                                            <p className="text-xs text-stone-500 mb-2 whitespace-pre-line">{item.desc}</p>
                                             {item.tags && (
                                                 <div className="flex flex-wrap gap-y-1 mb-2">
                                                     {item.tags.map(tag => (
@@ -569,14 +687,14 @@
             return (
                 <div className="min-h-screen bg-[#FDFCF8] text-stone-800 font-sans max-w-md mx-auto relative shadow-2xl overflow-hidden">
                     <header className="sticky top-0 z-20 bg-[#FDFCF8]/90 backdrop-blur-md border-b border-stone-100 px-6 py-4 flex justify-between items-end">
-                        <div><h1 className="text-xl font-bold tracking-tight text-stone-900">2025 北九州</h1><p className="text-xs text-stone-500 font-medium mt-0.5 tracking-wide">Dec 24 - Dec 31</p></div>
+                        <div><h1 className="text-xl font-bold tracking-tight text-stone-900">北九州鐵道冬季漫遊 8 日</h1><p className="text-xs text-stone-500 font-medium mt-0.5 tracking-wide">2025/12/24 - 2025/12/31</p></div>
                     </header>
 
                     <main className="min-h-screen">
                         {activeTab === 'itinerary' && (
                             <div className="p-4 pb-24 animate-fade-in">
                                 {tripData.days.map((day) => (
-                                    <DayCard key={day.id} day={day} isExpanded={expandedDay === day.id} onToggle={() => setExpandedDay(expandedDay === day.id ? null : day.id)} />
+                                    <DayCard key={day.id} day={day} isExpanded={true} onToggle={() => setExpandedDay(expandedDay === day.id ? null : day.id)} />
                                 ))}
                             </div>
                         )}
