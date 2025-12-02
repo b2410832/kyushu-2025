@@ -6,15 +6,14 @@ const urlsToCache = [
   './', // 根目錄 (index.html)
   './index.html',
   './manifest.json',
-  // 核心 JS/CSS 檔案 (從 CDN 載入的資源)
-  'https://unpkg.com/react@18/umd/react.development.js',
-  'https://unpkg.com/react-dom@18/umd/react-dom.development.js',
-  'https://unpkg.com/@babel/standalone/babel.min.js',
-  'https://cdn.tailwindcss.com',
-  'https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap',
+//   // 核心 JS/CSS 檔案 (從 CDN 載入的資源)
+//   'https://unpkg.com/react@18/umd/react.development.js',
+//   'https://unpkg.com/react-dom@18/umd/react-dom.development.js',
+//   'https://unpkg.com/@babel/standalone/babel.min.js',
+//   'https://cdn.tailwindcss.com',
+//   'https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap',
   // 確保也包含您的圖標檔案 (如果已準備)
-  // './android-chrome-192x192.png',
-  // './android-chrome-512x512.png',
+  './yufuin_no_mori_express.jpg',
 ];
 
 // 1. 安裝事件：快取所有靜態資源
