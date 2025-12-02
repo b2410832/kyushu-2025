@@ -8,17 +8,17 @@
     "theme_color": "#FDFCF8",
     "icons": [
     {
-      "src": "/yufuin_no_mori_express.jpg",
+      "src": "./yufuin_no_mori_express.jpg",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/yufuin_no_mori_express.jpg",
+      "src": "./yufuin_no_mori_express.jpg",
       "sizes": "512x512",
       "type": "image/png"
     },
     {
-      "src": "/yufuin_no_mori_express.jpg",
+      "src": "./yufuin_no_mori_express.jpg",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "maskable"
