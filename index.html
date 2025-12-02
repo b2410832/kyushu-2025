@@ -914,6 +914,21 @@
 
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
+
+        if ('serviceWorker' in navigator) {
+          // 等待整個頁面和資源載入完成
+          window.addEventListener('load', () => {
+              // navigator.serviceWorker.register() 是註冊 Service Worker 的核心 API
+              // './service-worker.js' 是 Service Worker 檔案的路徑
+              navigator.serviceWorker.register('./service-worker.js')
+                  .then(registration => {
+                      console.log('Service Worker 註冊成功: ', registration.scope);
+                  })
+                  .catch(err => {
+                      console.log('Service Worker 註冊失敗: ', err);
+                  });
+          });
+        }
     </script>
 </body>
 </html>
