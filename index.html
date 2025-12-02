@@ -41,7 +41,7 @@
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState, useMemo } = React;
+        const { useState, useEffect, useMemo } = React;
 
         // --- 簡易圖標組件 (SVG) ---
         // 為了不依賴外部 npm 套件，我們直接將圖標寫成組件
@@ -71,7 +71,7 @@
         // --- Data ---
         const tripData = {
           meta: {
-            title: "2025 北九州之旅",
+            title: "2025 北九州冬季漫遊",
             dates: "2025.12.24 - 12.31",
             travelers: "爸、夫、丹、R"
           },
@@ -86,24 +86,26 @@
                   type: "transport",
                   time: "14:45 - 18:00",
                   title: "台北 T1 → 福岡 I",
-                  desc: "星宇航空 JX840",
+                  desc: "星宇航空 JX840 (2小時15分)",
                   highlight: "去程航班",
                   tags: ["交通"],
-                  nav: "福岡機場"
+                  nav: "桃園機場第一航廈"
                 },
                 {
                   type: "transport",
                   title: "福岡機場 → 博多車站",
-                  desc: "兌換由布院之森車票",
+                  desc: "搭機場免費接駁巴士至國內線航廈，再轉乘地鐵 5 分鐘抵達「博多站」或搭乘計程車約 15 分鐘直達飯店",
                   tags: ["交通"],
-                  tips: "車站內售票機掃描 Qrcode 換取由布院之森車票 @Janet。搭機場免費接駁巴士至國內線航廈，再轉乘地鐵 5 分鐘抵達「博多站」或搭乘計程車約 15 分鐘直達飯店。",
+                  image: "ticket-machine.png",
+                  imageDesc: "車站售票機點擊「Read QR code」> 掃描預訂確認郵件中的 QR code > 在 Select payment method 選擇「Paid」> 輸入 11 位取票編號 > 點擊「Issue」後每位乘客將獲得兩張車票：1張基本票+1張特快列車票。",
+                  tips: "抵達博多車站後記得換取 JR 車票 @Janet @Rose。",
                   nav: "博多車站"
                 },
                 {
                   type: "hotel",
                   title: "福岡日航飯店",
                   desc: "入住：15:00 / 退房：11:00",
-                  tips: "預訂人 @Janet、klook @Rose。",
+                  tips: "預訂人 @Janet、Klook @Rose。",
                   tags: ["住宿"],
                   nav: "福岡日航飯店",
                   image: "fukuoka-nikko.jpg",
@@ -114,7 +116,7 @@
                   tags: ["餐食"],
                   image: "christmas-market.webp",
                   imageDesc: "博多聖誕市集「CHRISTMAS MARKET in 光の街・博多」日期：2025/11/1~12/25，地點：JR 博多站前廣場，開放時間：【平日】16:45-23:00，【週末及假日】12:00-23:00，入場費：免費。",
-                  tips: "拉麵推薦：麵屋兼虎、ShinShin、博多一幸舍。",
+                  tips: "拉麵推薦：ShinShin(清爽)、gaga(清爽)、大砲(濃厚)、麵屋兼虎(沾麵)。",
                 },
               ]
             },
@@ -156,7 +158,7 @@
                   type: "hotel",
                   title: "山莊無量塔",
                   desc: "入住：15:00 / 退房：11:00",
-                  tips: "預訂人：@Janet，到店付款。",
+                  tips: "預訂人：官網 @Janet，到店付款。",
                   tags: ["必住由布院御三家", "住宿"],
                   image: "sansou-murata.jpg",
                   imageDesc: "佇立於大分由布院的溫泉旅館，融合藝術、美食與靜謐空間，融合懷舊與創新，展現日本原始風景的元素，帶來令人心醉的時光。融合懷舊與創新，展現日本原始風景的元素，帶來令人心醉的時光。位於寧靜的鳥越地區，館內設有溫泉旅館、美術館 artegio、Tan’s Bar、thétheo 咖啡館、theomurata 巧克力與不生庵蕎麥麵。",
@@ -222,7 +224,7 @@
                   tags: ["景點"],
                   image: "floral-village.jpg",
                   imageDesc: "以英國科茲窩爾德（Cotswold）村落為設計靈感，結合了歐式風格的建築與細緻的景觀設計，打造出一座童話般的迷你村落。",
-                  tips: "魔女宅急便主題店、愛麗絲夢遊仙境、吉卜力商店、貓頭鷹之森。下午可於金鱗湖畔咖啡廳休息：Cafe La Ruche、茶房 天井棧敷。",
+                  tips: "魔女宅急便主題店、愛麗絲夢遊仙境、吉卜力商店、貓頭鷹之森。可於金鱗湖畔咖啡廳休息：Cafe La Ruche、茶房 天井棧敷。",
                   nav: "由布院花卉村"
                 },
                 {
@@ -282,15 +284,14 @@
                   title: "阿蘇站前 Toyota 租車",
                   desc: "出發時間：2025/12/27 12:00 / 還車時間：2025/12/18 15:30",
                   tags: ["需預約", "交通"],
-                  tips: "預訂人：@Janet，預約號碼：99996098200，姓名：ChienYuChen。",
+                  tips: "預訂人：@Janet。",
                   nav: "阿蘇站前toyota租車"
                 },
                 {
                   type: "food",
-                  time: "13:00",
                   title: "午餐：赤牛丼",
                   desc: "阿蘇名物",
-                  tips: "推薦：MESHI NO YAMAICHI、IMAKIN食堂、Iwasaki、Hanabishi(炸)，皆需預留排隊時間。",
+                  tips: "推薦：MESHI NO YAMAICHI、IMAKIN食堂、Iwasaki、Hanabishi(炸)、山康，皆需預留排隊時間。",
                   tags: ["必吃美食", "餐食"],
                   image: "red-beef-don.jpg",
                   imageDesc: "阿蘇的特產「赤牛」是在阿蘇火山口形成的草原上種植的。一種棕色毛的日本品種，紅肉鬆軟適度，味道濃鬱。其味道香甜、脂肪含量低、質地輕盈，因健康美味而受到關注。",
@@ -301,7 +302,7 @@
                   time: "15:00",
                   title: "黑川溫泉 奧之湯",
                   desc: "入住：15:00（最晚 17:00）/ 退房：10:00 \n 提供可容納最多 25 輛車的免費停車場",
-                  tips: "預訂人：@Janet。可走路10分鐘至黑川溫泉街逛逛。",
+                  tips: "預訂人：Booking.com @Janet。可走路10分鐘至黑川溫泉街逛逛。",
                   tags: ["住宿"],
                   image: "okunoyu.jpg",
                   imageDesc: "本館佇立在流經整個黑川溫泉的田之原川上游，包括露天浴池和家庭浴池在內有 9 種不同的泡湯池，分別設在本館、新館和別屋周邊，另外還有黑川唯一的蒸煮場和岩盤浴、溫泉溫水游泳池、三溫暖等各種設施。泉質：氯化鈉硫酸鹽泉（弱酸性低張性高溫泉）。",
@@ -317,7 +318,6 @@
                 },
                 {
                   type: "sight",
-                  time: "20:00",
                   title: "黑川溫泉「湯明」",
                   desc: "冬季限定點燈活動",
                   tips: "時間：2025/12/20~2026/3/31，每日17:30~21:30，最佳地點：丸鈴橋。",
@@ -331,41 +331,50 @@
             {
               id: 5,
               date: "12/28 (日)",
-              location: "黑川 → 熊本",
+              location: "黑川溫泉 → 阿蘇 → 熊本",
               weather: { temp: "5°C - 12°C", icon: "CloudSun", desc: "多雲時晴" },
               items: [
                 {
                   type: "food",
-                  time: "8:00",
+                  time: "8:30",
                   title: "早餐：黑川溫泉 奧之湯",
                   desc: "當地食材烹調的鄉村風味宴席料理",
                   tags: ["餐食"],
                   nav: "Kurokawa Onsen Okunoyu"
                 },
+                // {
+                //   type: "sight",
+                //   time: "9:30",
+                //   desc: "黑川溫泉出發約 1 小時",
+                //   title: "自駕前往上色見熊野座神社",
+                //   image: "shrine.jpg",
+                //   imageDesc: "上色見熊野座神社位於熊本縣高森町，是一處被原始森林與千年杉木圍繞的靜謐聖地。沿著石階而上，約兩百多階梯之後，便可抵達擁有濃厚神秘氛圍的本殿。神社的「穿石」岩壁中有一道天然的巨大圓洞，相傳是神靈顯靈的象徵，也成為神社最具代表性的奇景之一。不只是當地人心中的信仰據點，這座神社也因與動畫《螢火之森》場景神似，而成為許多粉絲默默造訪的夢幻景點。",
+                //   tags: ["景點"],
+                //   nav: "上色見熊野座神社",
+                // },
+                // {
+                //   type: "food",
+                //   title: "午餐：赤牛專門店 山康 やま康",
+                //   tags: ["餐食"],
+                //   desc: "超人氣赤牛丼排隊名店",
+                //   image: "yamayasu.jpg",
+                //   imageDesc: "每日限量牛排。",
+                //   tips: "10:00開始登記領號碼牌。營業時間：週四到週日 11:00-14:00，售完為止。",
+                //   nav: "山康"
+                // },
                 {
-                  type: "sight",
-                  time: "9:30",
-                  desc: "黑川溫泉出發約 1 小時",
-                  title: "自駕前往上色見熊野座神社",
-                  image: "shrine.jpg",
-                  imageDesc: "上色見熊野座神社位於熊本縣高森町，是一處被原始森林與千年杉木圍繞的靜謐聖地。沿著石階而上，約兩百多階梯之後，便可抵達擁有濃厚神秘氛圍的本殿。神社的「穿石」岩壁中有一道天然的巨大圓洞，相傳是神靈顯靈的象徵，也成為神社最具代表性的奇景之一。不只是當地人心中的信仰據點，這座神社也因與動畫《螢火之森》場景神似，而成為許多粉絲默默造訪的夢幻景點。",
-                  tags: ["景點"],
-                  nav: "上色見熊野座神社",
+                  type: "transport",
+                  time: "10:00",
+                  title: "自駕前往阿蘇火山口",
+                  desc: "飯店出發約 1 小時",
+                  tags: ["交通"],
+                  nav: "阿蘇中岳火山口"
                 },
                 {
-                  type: "food",
-                  title: "午餐：赤牛專門店 山康 やま康",
-                  tags: ["餐食"],
-                  desc: "超人氣赤牛丼排隊名店",
-                  image: "yamayasu.jpg",
-                  imageDesc: "每日限量牛排。",
-                  tips: "10:00開始登記領號碼牌。營業時間：週四到週日 11:00-14:00，售完為止。",
-                  nav: "山康"
-                },
-                {
                   type: "sight",
+                  time: "11:00",
                   title: "阿蘇中岳火山口",
-                  tips: "視火山氣體濃度開放: https://www.aso-volcano.jp/。阿蘇山公園道路冬季期間：12月1日~3月19日 AM9:00-PM4:30 ※PM5:00閉門",
+                  tips: "視火山氣體濃度開放: <a class='underline' target='_blank'  href='https://www.aso-volcano.jp/'>https://www.aso-volcano.jp/</a>。阿蘇山公園道路冬季期間：12月1日~3月19日 AM9:00-PM4:30 ※PM5:00閉門",
                   tags: ["景點"],
                   image: "volcano.avif",
                   nav: "阿蘇中岳火山口"
@@ -396,7 +405,7 @@
                   tags: ["需預約", "必搭人氣觀光列車", "交通"],
                   image: "asoboy.jpg",
                   imageDesc: "全車都是『小黑』狗狗圖案，3號車廂設有家庭車廂、親子坐席、遊樂場、咖啡館等。",
-                  tips: "預訂人: @Rose。",
+                  tips: "預訂人: Klook @Rose。",
                   nav: "熊本車站"
                 },
                 {
@@ -424,14 +433,8 @@
               weather: { temp: "7°C - 14°C", icon: "CloudSun", desc: "晴朗" },
               items: [
                 {
-                  type: "food",
-                  title: "午餐：熊本自理",
-                  desc: "",
-                  tags: ["餐食"],
-                },
-                {
                   type: "transport",
-                  time: "15:20",
+                  time: "11:42 - 12:21",
                   title: "熊本 → 博多",
                   desc: "九州新幹線",
                   tags: ["需預約", "交通"],
@@ -441,9 +444,15 @@
                   type: "hotel",
                   title: "福岡日航飯店",
                   desc: "入住：15:00 / 退房：11:00",
-                  tips: "預訂人：klook @Janet。",
+                  tips: "預訂人：Klook @Janet。",
                   tags: ["住宿"],
                   nav: "福岡日航飯店"
+                },
+                {
+                  type: "food",
+                  title: "午餐：福岡自理",
+                  desc: "",
+                  tags: ["餐食"],
                 },
                 {
                   type: "food",
@@ -451,7 +460,7 @@
                   title: "晚餐：博多牛腸鍋前田屋(今泉店)",
                   desc: "博多名物牛腸鍋(Motsunabe)",
                   tags: ["需預約", "必吃美食", "餐食"],
-                  tips: "預訂人：@Janet，預約號碼：#4419。推薦：味噌口味、鯖魚生魚片、波浪麵。",
+                  tips: "預訂人：@Janet。推薦：味噌口味、鯖魚生魚片、波浪麵。",
                   image: "motsunabe-maedaya.webp",
                   imageDesc: "",
                   nav: "博多もつ鍋前田屋 今泉店"
@@ -476,13 +485,6 @@
                   nav: "Pain Stock Tenjin"
                 },
                 {
-                  type: "sight",
-                  title: "福岡市區散策",
-                  desc: "天神地下街",
-                  tags: ["景點"],
-                  nav: "Tenjin Underground Shopping Center"
-                },
-                {
                   type: "food",
                   time: "12:00",
                   title: "午餐：鮨と天草大王 天音",
@@ -491,6 +493,13 @@
                   image: "sushi.jpg",
                   tips: "預訂人: @Janet。",
                   nav: "鮨と天草大王 天音"
+                },
+                {
+                  type: "sight",
+                  title: "福岡市區散策",
+                  desc: "天神地下街、百貨公司",
+                  tags: ["景點"],
+                  nav: "Tenjin Underground Shopping Center"
                 },
                 {
                   type: "hotel",
@@ -561,7 +570,7 @@
                   type: "transport",
                   time: "19:10 - 20:50",
                   title: "福岡 → 台北",
-                  desc: "星宇航空 JX841",
+                  desc: "星宇航空 JX841 (2小時40分)",
                   highlight: "回程航班",
                   tags: ["交通"],
                   nav: "Fukuoka Airport International Terminal"
@@ -574,11 +583,11 @@
             { num: "JX841", route: "FUK 19:10 → TPE 20:50", date: "12/31" }
           ],
           hotels: [
-            { name: "福岡日航飯店", night: "Day 1, 6, 7", loc: "博多站前", tel: "+81-92-482-1111" },
+            { name: "福岡日航飯店", night: "Day 1, 6, 7", loc: "福岡", tel: "+81-92-482-1111" },
             { name: "山莊無量塔", night: "Day 2", loc: "由布院", tel: "+81-977-84-5000" },
             { name: "壽花之庄", night: "Day 3", loc: "由布院", tel: "+81-977-84-2161" },
-            { name: "黑川溫泉 奧之湯", night: "Day 4", loc: "黑川", tel: "+81-967-44-0021" },
-            { name: "Ref Kumamoto", night: "Day 5", loc: "熊本", tel: "+81-96-322-0011" },
+            { name: "黑川溫泉 奧之湯", night: "Day 4", loc: "黑川溫泉", tel: "+81-967-44-0021" },
+            { name: "REF Kumamoto by VESSEL HOTELS", night: "Day 5", loc: "熊本", tel: "+81-096-328-7777" },
           ],
           emergency: [
             { name: "警察局", tel: "110" },
@@ -610,14 +619,16 @@
             );
         };
 
-        const DayCard = ({ day, isExpanded, onToggle }) => {
+        const DayCard = ({ day, isExpanded, onToggle, id }) => {
             return (
-                <div className="bg-white rounded-xl shadow-sm border border-stone-100 overflow-hidden mb-4 transition-all duration-300">
+                <div id={id} className="bg-white rounded-xl shadow-sm border border-stone-100 overflow-hidden mb-4 transition-all duration-300">
                     <div onClick={onToggle} className="p-4 flex items-center justify-between cursor-pointer active:bg-stone-50">
                         <div className="flex flex-col items-start">
                             <div className="flex items-center gap-2 mb-1">
-                                <span className="font-bold text-lg text-stone-800">{day.date}</span>
-                                <span className="text-sm text-stone-500 font-medium">{day.location}</span>
+                              <span className="font-bold text-lg text-stone-800">Day {day.id}</span>
+                            </div>
+                            <div className="flex items-center gap-2 mb-1">
+                                <span className="text-sm text-stone-500 font-medium">{day.date} · {day.location} </span>
                             </div>
                             <WeatherBadge weather={day.weather} />
                         </div>
@@ -666,7 +677,8 @@
                                             )}
                                             {item.tips && (
                                                 <div className="mt-2 text-xs bg-stone-50 p-2 rounded text-stone-600 italic border-l-2 border-amber-200">
-                                                    <span className="font-bold not-italic mr-1 text-amber-600">Tip:</span>{item.tips}
+                                                    <span className="font-bold not-italic mr-1 text-amber-600">Tip:</span>
+                                                    <span dangerouslySetInnerHTML={{ __html: item.tips }} />
                                                 </div>
                                             )}
                                         </div>
@@ -698,8 +710,16 @@
                         {tripData.hotels.map((h, i) => (
                             <div key={i} className="flex flex-col text-sm border-l-2 border-stone-200 pl-3">
                                 <div className="flex justify-between items-start">
-                                    <div className="font-bold text-stone-800">{h.name}</div>
-                                    <div className="text-xs bg-stone-100 px-2 py-0.5 rounded text-stone-500">{h.loc}</div>
+                                    <div>
+                                      <span className="font-bold text-stone-800 mr-2">{h.name}</span>
+                                      <span className="text-xs bg-stone-100 px-2 py-0.5 rounded text-stone-500">{h.loc}</span>                              
+                                    </div>
+                                    <button 
+                                        onClick={(e) => { e.stopPropagation(); window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(h.name)}`, '_blank'); }}
+                                        className="p-1.5 bg-blue-50 text-blue-600 rounded-full hover:bg-blue-100 transition-colors"
+                                    >
+                                        <Icons.Navigation size={14} />
+                                    </button>
                                 </div>
                                 <div className="text-stone-400 text-xs mb-1">{h.night}</div>
                                 <a href={`tel:${h.tel}`} className="flex items-center gap-1 text-stone-500 text-xs mt-1 hover:text-blue-500"><Icons.Phone size={10} /> {h.tel}</a>
@@ -758,37 +778,130 @@
             );
         };
 
+        const DateNavigation = ({ days, activeDayId, scrollToDay }) => {
+            return (
+                // 設置 top-[62px] 以避開 sticky header
+                <div className="sticky top-[62px] z-10 bg-white/95 backdrop-blur-sm border-b border-stone-100 shadow-sm overflow-x-auto whitespace-nowrap scrollbar-hide">
+                    <div className="flex px-4">
+                        {days.map((day) => (
+                            <button
+                                key={day.id}
+                                onClick={() => scrollToDay(day.id)}
+                                className={`flex flex-col items-center flex-shrink-0 px-4 py-2 text-sm font-medium transition-colors duration-200 border-b-4 
+                                    ${activeDayId === day.id
+                                        ? 'text-amber-600 border-amber-400'
+                                        : 'text-stone-500 border-transparent hover:text-stone-700'
+                                    }`}
+                            >
+                                <span className="mt-1 mb-1 text-sm font-bold">{day.date.split('(')[0]}</span>
+                                <span className="text-xs">週{day.date.split("(")[1].split(")")[0]}</span>
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            );
+        };
+
+        // --- 滾動到頂部按鈕組件 ---
+        const ScrollToTopButton = () => {
+            // 滾動到頁面頂端
+            const scrollToTop = () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            };
+
+            // 將按鈕包裹在一個固定且全寬的 div 中，然後利用 max-w-md mx-auto 居中對齊
+            // fixed bottom-24 inset-x-0 確保按鈕固定在螢幕底部中央。
+            return (
+                <div className="fixed bottom-32 inset-x-0 z-40">
+                    <div className="max-w-md mx-auto relative h-0"> {/* h-0 避免佔用空間，relative 讓按鈕可以絕對定位 */}
+                        <button
+                            onClick={scrollToTop}
+                            // 使用 absolute 定位在 max-w-md 容器的右側，right-6 保留邊距
+                            className="absolute right-6 p-3 bg-sky-500 text-white rounded-full shadow-lg hover:bg-sky-600 transition-all duration-300 transform hover:scale-105"
+                            aria-label="回到頁面頂端"
+                        >
+                            <Icons.ChevronUp size={24} strokeWidth={2.5} />
+                        </button>
+                    </div>
+                </div>
+            );
+        };
+
         // --- Main App ---
         function App() {
             const [activeTab, setActiveTab] = useState('itinerary');
-            const [expandedDay, setExpandedDay] = useState(2);
+            const [expandedDay, setExpandedDay] = useState(new Set(tripData.days.map((day) => day.id)));
+            const [activeDayId, setActiveDayId] = useState(1); // 新增狀態：追蹤目前點擊的日期 ID
+
+            // 捲動至指定 DayCard 的函式
+            const scrollToDay = (dayId) => {
+                setActiveDayId(dayId); // 更新狀態以高亮顯示
+                const element = document.getElementById(`day-${dayId}`);
+                if (element) {
+                    // 估計 Header + DateNav 的高度 (大約 62px + 50px)
+                    const OFFSET = 110;
+                    
+                    // 計算元素在頁面中的絕對位置
+                    const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+                    
+                    // 平滑捲動
+                    window.scrollTo({
+                        top: elementPosition - OFFSET,
+                        behavior: 'smooth'
+                    });
+                }
+            };
 
             return (
                 <div className="min-h-screen bg-[#FDFCF8] text-stone-800 font-sans max-w-md mx-auto relative shadow-2xl overflow-hidden">
                     <header className="sticky top-0 z-20 bg-[#FDFCF8]/90 backdrop-blur-md border-b border-stone-100 px-6 py-4 flex justify-between items-end">
-                        <div><h1 className="text-xl font-bold tracking-tight text-stone-900">北九州鐵道冬季漫遊 8 日</h1><p className="text-xs text-stone-500 font-medium mt-0.5 tracking-wide">2025/12/24 - 2025/12/31</p></div>
+                        <div>
+                          <h1 className="text-xl font-bold tracking-tight text-stone-900">{tripData.meta.title}</h1>
+                          <p className="text-xs text-stone-500 font-medium mt-0.5 tracking-wide"></p>
+                        </div>
                     </header>
-
                     <main className="min-h-screen">
                         {activeTab === 'itinerary' && (
+                          <>
+                            <DateNavigation 
+                              days={tripData.days} 
+                              activeDayId={activeDayId}
+                              scrollToDay={scrollToDay} 
+                            />
                             <div className="p-4 pb-24 animate-fade-in">
                                 {tripData.days.map((day) => (
-                                    <DayCard key={day.id} day={day} isExpanded={true} onToggle={() => setExpandedDay(expandedDay === day.id ? null : day.id)} />
+                                    <DayCard 
+                                      key={day.id}
+                                      id={`day-${day.id}`} // 傳遞 ID 給 DayCard 
+                                      day={day} 
+                                      isExpanded={expandedDay.has(day.id)} 
+                                      onToggle={() => setExpandedDay((prevExpanded) => {
+                                        const newExpanded = new Set(prevExpanded);
+                                        newExpanded.has(day.id) ? newExpanded.delete(day.id) : newExpanded.add(day.id);
+                                        return newExpanded;
+                                      }
+                                    )} />
                                 ))}
                             </div>
+                          </>
                         )}
                         {activeTab === 'info' && <InfoSection />}
                         {activeTab === 'budget' && <BudgetCalculator />}
                     </main>
+                    {/* 回到頂部按鈕 */}
+                    <ScrollToTopButton />
 
-                    <nav className="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white border-t border-stone-200 px-6 py-3 flex justify-between items-center z-30 pb-safe">
-                        <button onClick={() => setActiveTab('itinerary')} className={`flex flex-col items-center gap-1 transition-colors ${activeTab === 'itinerary' ? 'text-stone-900' : 'text-stone-400'}`}>
+                    <nav className="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white border-t border-stone-200 px-3 flex justify-between items-center z-30 pb-safe">
+                        <button onClick={() => setActiveTab('itinerary')} className={`flex flex-col items-center gap-1 py-3 px-6 transition-colors ${activeTab === 'itinerary' ? 'text-stone-900' : 'text-stone-400'}`}>
                             <Icons.Calendar size={20} strokeWidth={activeTab === 'itinerary' ? 2.5 : 2} /><span className="text-[10px] font-medium">行程</span>
                         </button>
-                        <button onClick={() => setActiveTab('info')} className={`flex flex-col items-center gap-1 transition-colors ${activeTab === 'info' ? 'text-stone-900' : 'text-stone-400'}`}>
+                        <button onClick={() => setActiveTab('info')} className={`flex flex-col items-center gap-1 py-3 px-6 transition-colors ${activeTab === 'info' ? 'text-stone-900' : 'text-stone-400'}`}>
                             <Icons.Hotel size={20} strokeWidth={activeTab === 'info' ? 2.5 : 2} /><span className="text-[10px] font-medium">資訊</span>
                         </button>
-                        <button onClick={() => setActiveTab('budget')} className={`flex flex-col items-center gap-1 transition-colors ${activeTab === 'budget' ? 'text-stone-900' : 'text-stone-400'}`}>
+                        <button onClick={() => setActiveTab('budget')} className={`flex flex-col items-center gap-1 py-3 px-6 transition-colors ${activeTab === 'budget' ? 'text-stone-900' : 'text-stone-400'}`}>
                             <Icons.Wallet size={20} strokeWidth={activeTab === 'budget' ? 2.5 : 2} /><span className="text-[10px] font-medium">記帳</span>
                         </button>
                     </nav>
