@@ -1,0 +1,9 @@
+{
+    "name": "2025北九州之旅",
+    "short_name": "2025北九州",
+    "description": "2025 北九州行程與資訊總覽",
+    "start_url": "./index.html",
+    "display": "standalone",
+    "background_color": "#FDFCF8",
+    "theme_color": "#303030"
+}
